@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
 """Entry point for the news-image-20261117 submission.
 
-Draws the front page with render.py and writes entry.png into
-$MAKEFUN_OUTPUT_DIR (default /output). No network, no inputs, deterministic.
+Copies the shipped front-page image (entry.png, drawn programmatically
+by render.py during the build session) to $MAKEFUN_OUTPUT_DIR/entry.png.
+Standard library only; deterministic -- the same bytes on every run.
 """
 import os
-import sys
+import shutil
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+HERE = os.path.dirname(os.path.abspath(__file__))
 
-from render import main
+
+def main():
+    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
+    os.makedirs(out_dir, exist_ok=True)
+    shutil.copyfile(os.path.join(HERE, "entry.png"),
+                    os.path.join(out_dir, "entry.png"))
+
 
 if __name__ == "__main__":
     main()
